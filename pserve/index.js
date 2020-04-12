@@ -1,13 +1,15 @@
 //Require dotenv for reading enviromental variables
 const dotenv = require('dotenv').config({path: './process.env'});
+const sharp = require('sharp');
 //Exit if error in reading env file
 if (dotenv.error) {
     console.log('No env file found (process.env)');
     process.exit(2);
 
 }
-//Require express
+//Require express and path
 const express = require('express');
+const path = require('path');
 //Include parse server
 const ParseServer = require('parse-server').ParseServer;
 //Include parse dashboard
@@ -28,15 +30,17 @@ let parseURL = 'http://localhost:'+port+parsePath;
 //Configure Parse Server
 let api = new ParseServer({
     databaseURI: process.env.DATABASE_URI,
-    /*databaseURI: 'mongodb://webdevisdemo:c0r0naD3m0@basecluster0-shard-00-01-yhnnw.mongodb.net:27017,basecluster0-shard-00-00-yhnnw.mongodb.net:27017,basecluster0-shard-00-02-yhnnw.mongodb.net:27017/?ssl=true&replicaSet=baseCluster0-shard-0&readPreference=primary&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-1',*/
     cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
     fileKey: 'wdis',
     appId: process.env.APP_ID || 'myAppId',
     masterKey: process.env.MASTER_KEY || '',
+    restAPIKey: process.env.RESTAPI_KEY || 'myRestKey',
+    javascriptKey: process.env.JAVASCRIPT_KEY || 'myJavKey',
     serverURL: parseURL || 'http://localhost:1337/parse',
+    /*verbose: 1,
     liveQuery: {
-        classNames: ["Posts", "Comments"]
-    }
+        classNames: ["dubailandmarks","Gamescore"]
+    }*/
 });
 
 // Configure Parse Dashboard
@@ -60,12 +64,12 @@ let dashboard = new ParseDashboard({
     trustProxy: 1
 }, {allowInsecureHTTP: true});
 
-let app = express();
 
+let app = express();
+//Normal status 200 response on root path
 app.get('/', function(req, res) {
     res.status(200).send('Webserver is up');
 });
-
 
 //Serve the Parse API on the /parse URL prefix
 app.use(parsePath, api);
@@ -74,12 +78,10 @@ app.use(dashboardPath,dashboard);
 
 //Start webserver
 let httpServer = require('http').createServer(app);
-
 httpServer.listen(port, function() {
     console.log('Parse server running ' + parseURL + '.');
 });
 
-// This will enable the Live Query real-time server
-ParseServer.createLiveQueryServer(httpServer);
-
-
+//Disable below, not need for this project
+//This will enable the Live Query real-time server
+//ParseServer.createLiveQueryServer(httpServer);
