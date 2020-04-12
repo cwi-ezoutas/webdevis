@@ -1,0 +1,32 @@
+<div class="container-fluid d-inline-block my-2">
+    <div class="d-inline align-middle">Home</div>
+    <div class="float-right d-inline-block">
+        <div class="d-inline">
+            Order By: <select class="form-control-sm" id="selectfield" [(ngModel)]="selectOrderField">
+            <option value="order" selected="selected">Order</option>
+            <option value="title">Title</option>
+        </select>
+        </div>
+        <div class="d-inline">
+            Direction: <select class="form-control-sm" id="selectorder" [(ngModel)]="selectOrderDirection">
+            <option value="" selected="selected">Asc</option>
+            <option value="-">Desc</option>
+        </select>
+        </div>
+    </div>
+</div>
+<div>
+    <ul class="list-unstyled list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let land of landmarks | orderBy: this.selectOrderDirection+this.selectOrderField">
+            <div class="media">
+
+                <div class="media-body">
+                    <img class="img-thumbnail rounded img-fluid float-left mr-3 col-3 col-sm-2" [src]="(land.get('photo_thumb'))?land.get('photo_thumb').url():'http://localhost:4200/assets/noimage240.png'">
+
+                    <h4 class="media-heading"><a [routerLink]="" (click)="getMeToThis(land)">{{land.get('title')}}</a><br></h4>
+                    {{land.get('short_info')|truncate:150}}
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

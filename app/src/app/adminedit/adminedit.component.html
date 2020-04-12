@@ -1,0 +1,58 @@
+<div>
+    <h3 class="text-center text-info pt-5">Edit Landmark {{title}}</h3>
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+                <div id="login-box" class="col-md-12">
+                    <form class="form" id="editlandmark" #editlandmark="ngForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label for="title" class="text-info">Title:</label><br>
+                            <input id="title" type="text" name="title" [(ngModel)]="title" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="short_info" class="text-info">Short Title:</label><br>
+                            <textarea rows="4" id="short_info" name="short_info" [(ngModel)]="short_info" class="form-control">{{short_info}}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="text-info">Description:</label><br>
+                            <textarea rows="6" id="description" name="description" [(ngModel)]="description" class="form-control">{{description}}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="urls" class="text-info">Site URL:</label><br>
+                            <input id="urls" type="text" name="urls" [(ngModel)]="urls" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="title" class="text-info">Upload image:</label><br>
+                            <div class="custom-file">
+                                <input id="photoform" type="file" #photoform
+                                       name="file" accept='image/*'
+                                       (change)="handleFileInput($event.target.files)" class="custom-file-input">
+                                <label class="custom-file-label" for="photoform">Choose file</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <ngb-alert *ngIf="bigFile" [dismissible]="true" (close)="bigFile=false">
+                                <strong>Large image selected!</strong><br>You have chosen an image bigger than 5MB. Please choose a smaller one.
+                            </ngb-alert>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="geolat" class="text-info">Latitude:</label><br>
+                            <input id="geolat" type="text" name="geolat" [(ngModel)]="location[0]" class="form-control">
+                            <label for="geolon" class="text-info">Longitude:</label><br>
+                            <input id="geolon" type="text" name="geolon" [(ngModel)]="location[1]" class="form-control">
+
+                        </div>
+
+                        <div class="form-group">
+                            <ngb-alert *ngIf="!saveSuccessClosed" (close)="saveSuccessClosed = true">Successful save!</ngb-alert>
+                            <input type="submit" name="submit" class="btn btn-info btn-md" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

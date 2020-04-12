@@ -1,0 +1,25 @@
+<div class="media mb-4">
+    <div class="media-body">
+        <img class="img-thumbnail rounded img-responsive float-left mr-3" [src]="(thumbnailUrl)?thumbnailUrl:'http://localhost:4200/assets/noimage240.png'">
+
+        <h4 class="media-heading">{{title}}<br></h4>
+        <h6 class="small">Homepage: <a [href]="urls">{{ urls | truncate: 30:false:'...' }}</a>
+            <br>Created on {{createdAt | date:'short'}}<br>Last modified on {{lastUpdate | date:'short'}} </h6>
+        <div class="media-body">{{short_info}} </div>
+        <p></p>
+        <h6 class="media-heading">Read the full story!</h6>
+        <div class="media-body">{{description}}</div>
+
+        Location of the landmark:
+        <div id="gmapdirect" class="col-12" style="height:200px">
+            <agm-map [latitude]="location[0]" [longitude]="location[1]" [zoom]="zoom"
+                     [disableDefaultUI]="false" [zoomControl]="true" [usePanning]="true">
+                <agm-marker [latitude]="location[0]" [longitude]="location[1]">
+                    <agm-info-window>
+                        <strong>{{title}}</strong>
+                    </agm-info-window>
+                </agm-marker>
+            </agm-map>
+        </div>
+    </div>
+</div>
